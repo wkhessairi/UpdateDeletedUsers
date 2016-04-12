@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<configuration
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+   xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+    <component>
+        <type>org.exoplatform.tracfin.profile.UpdateProfileRESTService</type>
+    </component>
+    <external-component-plugins>
+        <target-component>org.exoplatform.web.filter.ExtensibleFilter</target-component>
+        <component-plugin profiles="all">
+            <name>My Spaces Filter</name>
+            <set-method>addFilterDefinitions</set-method>
+            <type>org.exoplatform.web.filter.FilterDefinitionPlugin</type>
+            <init-params>
+                <object-param>
+                    <name>My spaces Filter</name>
+                    <object type="org.exoplatform.web.filter.FilterDefinition">
+                        <field name="filter">
+                            <object type="org.exoplatform.tracfin.profile.ProfileFilter" />
+                        </field>
+                        <field name="patterns">
+                            <collection type="java.util.ArrayList" item-type="java.lang.String">
+                                <value>
+                                    <string>.*/profile/.*</string>
+                                </value>
+                                <value>
+                                    <string>.*/connections/network/.*</string>
+                                </value>
+                                <value>
+                                    <string>.*/activities/.*</string>
+                                </value>
+                                <value>
+                                    <string>.*/wiki/user/.*</string>
+                                </value>
+                            </collection>
+                        </field>
+                    </object>
+                </object-param>
+            </init-params>
+        </component-plugin>
+    </external-component-plugins>
+
+
+    <!-- Uncomment this part if you want to execute a scheduled job that removes all users mapped only in IDM.
+     Before activating this job, it is recommended to execute a rest service using this url "/rest/social/GetUsersList",
+     this will return a list of users which will be deleted by this job -->
+    <!-- <external-component-plugins>
+        <target-component>org.exoplatform.services.scheduler.JobSchedulerService</target-component>
+
+        <component-plugin>
+
+            <name>CronJob Plugin</name>
+
+            <set-method>addCronJob</set-method>
+
+            <type>org.exoplatform.services.scheduler.CronJob</type>
+
+            <description>cron job configuration</description>
+
+            <init-params>
+
+                <properties-param>
+
+                    <name>cronjob.info</name>
+
+                    <description>dumb job executed by cron expression</description>
+
+                    <property name="jobName" value="UpdateDeletedUsers"/>
+
+                    <property name="groupName" value="UpdateDeletedUsersGroup"/>
+
+                    <property name="job" value="org.exoplatform.tracfin.profile.UpdateDeletedUsers"/>
+
+                    this property sets the execution time of this job
+                    in this example the job is executed every day at 20:00pm
+                    <property name="expression" value="0 00 20 * * ?"/>
+
+                </properties-param>
+
+            </init-params>
+
+        </component-plugin>
+    </external-component-plugins> -->
+
+</configuration>
